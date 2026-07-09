@@ -3,7 +3,7 @@ from collections import Counter
 
 def euc_distance(x, y):
     return np.linalg.norm(np.array(x) - np.array(y))
-
+# KNN Algorithm
 def knn_predict(X_train, X_test, y_train, k = 3):
     predictions = []
     for test_point in X_test:
