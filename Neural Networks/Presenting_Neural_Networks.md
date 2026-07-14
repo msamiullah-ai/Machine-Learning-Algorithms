@@ -301,11 +301,11 @@ The bias is **broadcast** automatically across all **m** examples.
 
 ## Dimension Check
 
-$$
-(1,n)\times(n,m)
+
+(1, n) * (n, m) = (1, m)
 =
 (1,m)
-$$
+
 
 Adding the bias does not change the dimensions.
 
@@ -427,27 +427,24 @@ In other words,
 
 # Matrix Representation
 
-The pre-activation matrix for Layer 1 becomes
+### Matrix Representation
 
-$$
-Z^{[1]}=
-\begin{bmatrix}
-z_1^{[1](1)} & z_1^{[1](2)} & \cdots & z_1^{[1](m)} \\
-z_2^{[1](1)} & z_2^{[1](2)} & \cdots & z_2^{[1](m)} \\
-\vdots & \vdots & \ddots & \vdots \\
-z_n^{[1](1)} & z_n^{[1](2)} & \cdots & z_n^{[1](m)}
-\end{bmatrix}
-$$
+The pre-activation matrix for Layer 1 becomes:
+
+```text
+             ⎡ z₁⁽¹⁾   z₁⁽²⁾   ⋯   z₁⁽ᵐ⁾ ⎤
+Z⁽¹⁾ =       ⎢ z₂⁽¹⁾   z₂⁽²⁾   ⋯   z₂⁽ᵐ⁾ ⎥
+             ⎢   ⋮       ⋮      ⋱     ⋮   ⎥
+             ⎣ zₙ⁽¹⁾   zₙ⁽²⁾   ⋯   zₙ⁽ᵐ⁾ ⎦
+```
 
 where
-
-- superscript **[1]** denotes **Layer 1**,
-- superscript **(i)** denotes the **iᵗʰ training example**.
+- superscript **(1)** on **Z** denotes **Layer 1**,
+- superscript **(i)** on **z** denotes the *i*ᵗʰ training example.
 
 Thus,
-
-- **Rows = neurons**
-- **Columns = training examples**
+- **Rows** = neurons
+- **Columns** = training examples
 
 This organization is the standard representation used in vectorized neural network implementations.
 
@@ -564,19 +561,18 @@ This consistent arrangement allows the forward propagation of an entire mini-bat
 
 For Layer **l**, the activation matrix is
 
-$$
-A^{[l]}=
-\begin{bmatrix}
-a_1^{[l](1)} & a_1^{[l](2)} & \cdots & a_1^{[l](m)} \\
-a_2^{[l](1)} & a_2^{[l](2)} & \cdots & a_2^{[l](m)} \\
-a_3^{[l](1)} & a_3^{[l](2)} & \cdots & a_3^{[l](m)} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_n^{[l](1)} & a_n^{[l](2)} & \cdots & a_n^{[l](m)}
-\end{bmatrix}
-$$
+```text
+             ⎡ a₁[l](1)   a₁[l](2)   ⋯   a₁[l](m) ⎤
+A[l] =       ⎢ a₂[l](1)   a₂[l](2)   ⋯   a₂[l](m) ⎥
+             ⎢ a₃[l](1)   a₃[l](2)   ⋯   a₃[l](m) ⎥
+             ⎢    ⋮          ⋮        ⋱      ⋮     ⎥
+             ⎣ aₙ[l](1)   aₙ[l](2)   ⋯   aₙ[l](m) ⎦
+```
 
 where:
 
+- **[l]** denotes layer **l**.
+- **(i)** denotes the *i*ᵗʰ training example.
 - Each **row** represents the activations of one neuron.
 - Each **column** represents one training example.
 - **m** is the number of training examples in the mini-batch.
@@ -778,15 +774,9 @@ $$
 
 Applying the Chain Rule,
 
-$$
-\frac{\partial L}{\partial w_i}
-=
-\frac{\partial L}{\partial a}
-\cdot
-\frac{\partial a}{\partial z}
-\cdot
-\frac{\partial z}{\partial w_i}
-$$
+```text
+∂L/∂wᵢ = (∂L/∂a) · (∂a/∂z) · (∂z/∂wᵢ)
+```
 
 Since
 
@@ -878,87 +868,58 @@ $$
 
 Since
 
-$$
-A \in \mathbb{R}^{(1,m)}
-$$
-
-and
-
-$$
-Y \in \mathbb{R}^{(1,m)},
-$$
+```text
+A ∈ ℝ^(1,m)
+Y ∈ ℝ^(1,m)
+```
 
 we have
 
-$$
-dZ
-=
-A-Y
-=
-(1,m)-(1,m)
-=
-(1,m).
-$$
+```text
+dZ = A − Y
+   = (1,m) − (1,m)
+   = (1,m)
+```
 
 Thus,
 
-$$
-\boxed{
-dZ \in \mathbb{R}^{(1,m)}
-}
-$$
+```text
+dZ ∈ ℝ^(1,m)
+```
 
 ---
 
 # Bias Gradient
 
-For one training example,
+For one training example, the bias gradient is simply
 
-the bias gradient is simply
-
-$$
-db = dz.
-$$
+```text
+db = dz
+```
 
 For a mini-batch, we compute the **average error across all training examples**.
 
 Hence,
 
-$$
-\boxed{
-db
-=
-\frac{1}{m}
-\sum_{i=1}^{m}
-dz^{(i)}
-}
-$$
+```text
+          m
+db = (1/m) ∑ dz(i)
+         i=1
+```
 
 Since all individual errors are stored inside the vector
 
-$$
-dZ
-=
-\begin{bmatrix}
-dz^{(1)} &
-dz^{(2)} &
-\cdots &
-dz^{(m)}
-\end{bmatrix},
-$$
+```text
+dZ = [ dz(1)  dz(2)  ⋯  dz(m) ]
+```
 
 the above equation can be written compactly as
 
-$$
-\boxed{
-db
-=
-\frac{1}{m}
-\operatorname{Sum}(dZ)
-}
-$$
+```text
+db = (1/m) × Sum(dZ)
+```
 
-where the **Sum** operation adds all entries of **dZ**.
+where **Sum(dZ)** adds all entries of **dZ**.
 
 > **Interpretation:**  
 > The bias gradient is simply the **average prediction error** over the entire mini-batch.
@@ -977,14 +938,9 @@ To extend this to all training examples simultaneously, we vectorize the computa
 
 The gradient of the weight matrix is
 
-$$
-\boxed{
-dW
-=
-\frac{1}{m}
-X\,dZ^{T}
-}
-$$
+```text
+dW = (1/m) · X · dZᵀ
+```
 
 ---
 
@@ -1016,11 +972,8 @@ $$
 
 Now,
 
-$$
-(n,m)\times(m,1)
-=
-(n,1).
-$$
+(n,m) × (m,1) = (n,1)
+
 
 Hence,
 
@@ -1040,25 +993,15 @@ which is exactly the same shape as the original weight vector.
 
 For logistic regression (or a single output neuron), the complete vectorized backpropagation equations are
 
-$$
-\boxed{
-dZ=A-Y
-}
-$$
+```text
+dZ = A − Y
 
-$$
-\boxed{
-dW=\frac1mXdZ^T
-}
-$$
+dW = (1/m) · X · dZᵀ
 
-$$
-\boxed{
-db=\frac1m\operatorname{Sum}(dZ)
-}
-$$
+db = (1/m) · Sum(dZ)
+```
 
-These equations compute the gradients for an **entire mini-batch** in one set of matrix operations, making neural network training highly efficient.
+These equations compute the gradients for an **entire mini-batch** using a single set of matrix operations, making neural network training highly efficient.
 
 ---
 
@@ -1100,11 +1043,9 @@ where
 
 Using the Chain Rule,
 
-$$
-\frac{\partial L}{\partial A^{[l]}}
-=
-dA^{[l]}
-$$
+```text
+dA[l] = ∂L/∂A[l]
+```
 
 This quantity represents how sensitive the loss is to the activations of layer **l**.
 
@@ -1114,89 +1055,67 @@ This quantity represents how sensitive the loss is to the activations of layer *
 
 Since
 
-$$
-A^{[l]} = g\!\left(Z^{[l]}\right),
-$$
+```text
+A[l] = g(Z[l])
+```
 
 the Chain Rule gives
 
-$$
-\frac{\partial L}{\partial Z^{[l]}}
-=
-\frac{\partial L}{\partial A^{[l]}}
-\odot
-g'\!\left(Z^{[l]}\right),
-$$
+```text
+dZ[l] = dA[l] ⊙ g′(Z[l])
+```
 
 where
 
-- **⊙** denotes **element-wise multiplication** (Hadamard product),
-- **g′(Z)** is the derivative of the activation function.
+- **⊙** denotes **element-wise multiplication** (Hadamard product).
+- **g′(Z[l])** is the derivative of the activation function.
 
-Therefore,
+Thus,
 
-$$
-\boxed{
-dZ^{[l]}
-=
-dA^{[l]}
-\odot
-g'\!\left(Z^{[l]}\right)
-}
-$$
+```text
+dZ[l] = dA[l] ⊙ g′(Z[l])
+```
 
----
+--- 
 
 # Step 3: Gradient of the Weight Matrix
 
 Recall
 
-$$
-Z^{[l]}
-=
-W^{[l]}A^{[l-1]}
-+
-b^{[l]}.
-$$
+```text
+Z[l] = W[l] · A[l−1] + b[l]
+```
 
 Differentiating with respect to the weights gives
 
-$$
-\boxed{
-dW^{[l]}
-=
-\frac1m
-\,dZ^{[l]}
-\left(A^{[l-1]}\right)^T
-}
-$$
+```text
+dW[l] = (1/m) · dZ[l] · (A[l−1])ᵀ
+```
 
---- 
+---
 
 ## Dimension Check
 
 Suppose
 
-- dZ^[l] ∈ ℝ^(nₗ,m)
-- A^[l−1] ∈ ℝ^(nₗ₋₁,m)
+```text
+dZ[l]   ∈ ℝ^(nₗ,m)
+A[l−1]  ∈ ℝ^(nₗ₋₁,m)
+```
 
 Then
 
-$$
-(n_l,m)
-\times
-(m,n_{l-1})
-=
-(n_l,n_{l-1}),
-$$
+```text
+(nₗ,m) × (m,nₗ₋₁) = (nₗ,nₗ₋₁)
+```
 
 which matches the dimensions of
 
-$$
-W^{[l]}.
-$$
+```text
+W[l] ∈ ℝ^(nₗ,nₗ₋₁)
+```
 
----
+--- 
 
 # Step 4: Gradient of the Bias
 
@@ -1204,18 +1123,13 @@ The bias is shared across all training examples.
 
 Hence,
 
-$$
-\boxed{
-db^{[l]}
-=
-\frac1m
-\sum dZ^{[l]}
-}
-$$
+```text
+db[l] = (1/m) · Sum(dZ[l])
+```
 
-where the summation is performed **column-wise** (over the mini-batch).
+where the **Sum** operation is performed **column-wise** (over the mini-batch).
 
----
+--- 
 
 # Step 5: Gradient Passed to the Previous Layer
 
@@ -1223,44 +1137,35 @@ Finally, we compute the gradient required for the previous layer.
 
 Applying the Chain Rule,
 
-$$
-\boxed{
-dA^{[l-1]}
-=
-\left(W^{[l]}\right)^T
-dZ^{[l]}
-}
-$$
+```text
+dA[l−1] = (W[l])ᵀ · dZ[l]
+```
 
 ## Dimension Check
 
 If
 
-- W^[l] ∈ ℝ^(nₗ,nₗ₋₁),
+```text
+W[l] ∈ ℝ^(nₗ,nₗ₋₁)
+```
 
 then
 
-$$
-\left(W^{[l]}\right)^T
-\in
-\mathbb{R}^{(n_{l-1},n_l)}.
-$$
+```text
+(W[l])ᵀ ∈ ℝ^(nₗ₋₁,nₗ)
+```
 
 Therefore,
 
-$$
-(n_{l-1},n_l)
-\times
-(n_l,m)
-=
-(n_{l-1},m),
-$$
+```text
+(nₗ₋₁,nₗ) × (nₗ,m) = (nₗ₋₁,m)
+```
 
 which is exactly the shape of
 
-$$
-A^{[l-1]}.
-$$
+```text
+A[l−1] ∈ ℝ^(nₗ₋₁,m)
+```
 
 ---
 
@@ -1268,42 +1173,14 @@ $$
 
 For every hidden layer **l**,
 
-$$
-\boxed{
-dZ^{[l]}
-=
-dA^{[l]}
-\odot
-g'\!\left(Z^{[l]}\right)
-}
-$$
+```text
+dZ[l] = dA[l] ⊙ g′(Z[l])
 
-$$
-\boxed{
-dW^{[l]}
-=
-\frac1m
-dZ^{[l]}
-\left(A^{[l-1]}\right)^T
-}
-$$
+dW[l] = (1/m) · dZ[l] · (A[l−1])ᵀ
 
-$$
-\boxed{
-db^{[l]}
-=
-\frac1m
-\sum dZ^{[l]}
-}
-$$
+db[l] = (1/m) · Sum(dZ[l])
 
-$$
-\boxed{
-dA^{[l-1]}
-=
-\left(W^{[l]}\right)^T
-dZ^{[l]}
-}
-$$
+dA[l−1] = (W[l])ᵀ · dZ[l]
+```
 
 These four equations form the core of the backpropagation algorithm used to train deep neural networks.
