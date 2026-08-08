@@ -1,6 +1,6 @@
 # Linear Soft-Margin SVM
 
-In **Linear Soft-Margin SVM**, SVM still tries to find a decision boundary with the **maximum possible margin**, but unlike Hard-Margin SVM, it **allows some training points to violate the margin or even be misclassified**. This makes Soft-Margin SVM suitable for **non-linearly separable data**, noisy datasets, and datasets containing outliers. In practice, Soft-Margin SVM is used much more often than Hard-Margin SVM.
+In **Linear Soft-Margin SVM**, SVM still tries to find a decision boundary with the **maximum possible margin**, but unlike Hard-Margin SVM, it **allows some training points to violate the margin or even be misclassified**. This makes Soft-Margin SVM suitable for **non-linearly separable data**, noisy datasets, and datasets containing outliers. In practice, Soft-Margin SVM is used much more often than Hard-Margin SVM
 
 Suppose our separating hyperplane is
 
